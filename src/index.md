@@ -1,8 +1,16 @@
 ---
 layout: base.njk
-title: My New Website
+title: Home
 ---
 
-# Hello World! 
+# Welcome to Agosta.net
 
-My static site is officially up and running. Time to start building my blog.
+Here are my latest thoughts and updates:
+
+<ul>
+  {% for post in collections.post %}
+    <li>
+      <a href="{{ post.url }}">{{ post.data.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
