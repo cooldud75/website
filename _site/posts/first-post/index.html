@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Blog Post</title>
+    
+    <!-- Script run before body render to avoid light/dark flashing -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+
     <style>
+        /* Light Mode Defaults */
         :root {
             --bg-color: #f8fafc;
             --text-color: #334155;
@@ -12,6 +26,20 @@
             --accent-color: #2563eb;
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
+            --header-bg: #ffffff;
+            --muted-text: #64748b;
+        }
+
+        /* Dark Mode Overrides */
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #cbd5e1;
+            --heading-color: #f8fafc;
+            --accent-color: #60a5fa;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-bg: #1e293b;
+            --muted-text: #94a3b8;
         }
 
         body {
@@ -23,25 +51,34 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .container {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 1.5rem;
+            box-sizing: border-box;
         }
 
         .site-header {
-            background: white;
+            background: var(--header-bg);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .site-header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .logo {
@@ -55,21 +92,42 @@
             color: var(--text-color);
             text-decoration: none;
             font-weight: 500;
+            margin-left: 12px;
         }
 
         nav a:hover {
             color: var(--accent-color);
         }
 
+        /* Dark Mode Toggle Switch */
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--border-color);
+        }
+
         .site-main {
             flex: 1;
-            padding: 3rem 1.5rem;
+            padding: 2.5rem 1.5rem;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             margin-top: 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         h1, h2, h3 {
@@ -79,11 +137,23 @@
 
         .site-footer {
             text-align: center;
-            padding: 1.5rem 0;
+            padding: 2rem 0;
             font-size: 0.875rem;
-            color: #64748b;
+            color: var(--muted-text);
             border-top: 1px solid var(--border-color);
-            background: white;
+            background: var(--header-bg);
+            margin-top: auto;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .site-footer a {
+            color: var(--muted-text);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .site-footer a:hover {
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -91,10 +161,17 @@
     <header class="site-header">
         <div class="container">
             <a href="/" class="logo">Agosta.net</a>
-            <nav>
-                <a href="/">Home</a>
-                <a href="/bitcoin/" style="margin-left: 15px;">Bitcoin</a>
-            </nav>
+            <div class="header-right">
+                <nav>
+                    <a href="/" style="margin-left: 0;">Home</a>
+                    <a href="/about/">About</a>
+                    <a href="/blog/">Blog</a>
+                    <a href="/bitcoin/">Bitcoin</a>
+                </nav>
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                    🌙
+                </button>
+            </div>
         </div>
     </header>
 
@@ -106,8 +183,37 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 Agosta. All rights reserved.</p>
+            <p>© 2026 Agosta.net</p>
+            <p style="margin-top: 6px;">
+                <a href="/">Home</a> |
+                <a href="/about/">About</a> |
+                <a href="/blog/">Blog</a> |
+                <a href="/bitcoin/">Bitcoin</a> |
+                <a href="/sitemap.xml">Sitemap</a>
+            </p>
         </div>
     </footer>
+
+    <!-- Theme Toggle Functionality -->
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        
+        function updateToggleIcon() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            toggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Set initial icon state
+        updateToggleIcon();
+
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon();
+        });
+    </script>
 </body>
 </html>

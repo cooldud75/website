@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title | default("Agosta.net") }}</title>
+    <title>Assorted Bitcoin Graphs</title>
     
     <!-- Script run before body render to avoid light/dark flashing -->
     <script>
@@ -176,7 +176,54 @@
     </header>
 
     <main class="site-main container">
-        {{ content | safe }}
+        <style>
+  /* Cap the page container to a clean, centered width */
+  main, .container, .wrapper {
+    max-width: 800px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* Make all images span the full 800px uniformly */
+  img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    display: block;
+    margin: 25px auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+</style>
+<h1>Assorted Bitcoin Graphs</h1>
+<h3>1. Total Bitcoin Supply Curve</h3>
+<p>Tracks the total cumulative Bitcoin mined over time, showing the logarithmic approach toward the 21,000,000 hard supply cap across halving epochs.
+<img src="/images/1-Number-Available.png" alt="Total Bitcoin Supply Curve"></p>
+<hr>
+<h3>2. Block Reward Step-Down Schedule</h3>
+<p>Visualizes the programmatic decay of the block subsidy, halving every 210,000 blocks starting from 50 BTC in 2009 down toward zero.
+<img src="/images/2-Block-Reward.png" alt="Block Reward Halving Schedule"></p>
+<hr>
+<h3>3. Bitcoin Price on Exact Halving Dates</h3>
+<p>Highlights the spot price of Bitcoin on the exact calendar day of each halving event, tracing the long-term price expansion from $0.00 in 2009 to $63,803.00 in 2024.
+<img src="/images/3-Price-Per-Halving-Date.png" alt="Bitcoin Price on Halving Dates"></p>
+<hr>
+<h3>4. Bitcoin Price Highs and Lows per Epoch</h3>
+<p>Compares cycle bottom lows against cycle peak highs recorded across each four-year halving epoch from Epoch 1 through Epoch 5.
+<img src="/images/4-Price-High-and-Low-per-Epoch.png" alt="Bitcoin Price High and Low per Epoch"></p>
+<hr>
+<h3>5. Percentage Gain per Halving Cycle</h3>
+<p>Measures post-halving performance gains across cycles, illustrating the diminishing percentage return trend as Bitcoin's market capitalization grows (excluding 2012's initial off-the-charts expansion).
+<img src="/images/5-Gain-Per-Halving.png" alt="Gain Percentage Per Halving"></p>
+<hr>
+<h3>6. Dollar Value of Block Rewards per Epoch</h3>
+<p>Tracks the nominal USD value of a single block reward at each epoch's price high versus its price low, showing how fiat price appreciation outweighs declining BTC issuance.
+<img src="/images/6-Block-Reward-per-Epoch.png" alt="Dollar Value of Block Rewards per Epoch"></p>
+<hr>
+<h3>7. Side-by-Side Price and Reward Valuation</h3>
+<p>A grouped comparison evaluating Bitcoin's price floor and peak against the total fiat value of block subsidies generated across Epochs 1 through 5.
+<img src="/images/7-Price-and-Block-Reward-per-Epoch.png" alt="Price and Block Reward Per Epoch"></p>
+
     </main>
 
     <footer class="site-footer">
